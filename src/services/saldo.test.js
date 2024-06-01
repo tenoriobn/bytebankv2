@@ -1,5 +1,5 @@
 import api from './api';
-import { buscaSaldo } from './saldo';
+import { buscaSaldo, atualizaSaldo } from './saldo';
 
 jest.mock('./api');
 
@@ -12,6 +12,16 @@ const mockRequisicao = (retorno) => {
     setTimeout(() => {
       resolve({
         data: retorno,
+      });
+    }, 200);
+  });
+};
+
+const mockRequisicaoPut = () => {
+  return new Promise ((resolve) => {
+    setTimeout(() => {
+      resolve({
+        status: 201,
       });
     }, 200);
   });

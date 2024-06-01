@@ -1,5 +1,5 @@
 import api from './api'
-import { buscaTransacoes } from './transacoes';
+import { buscaTransacoes, salvaTransacao } from './transacoes';
 
 jest.mock('./api');
 
@@ -31,6 +31,16 @@ const mockRequisicaoErro = () => {
   });
 };
 
+const mockRequisicaoPost = () => {
+  return new Promise ((resolve) => {
+    setTimeout(() => {
+      resolve({
+        status: 201,
+      });
+    }, 200);
+  });
+};
+
 describe('Requisições para API', () => {
   test('Deve retornar uma lista de transações', async () => {
     api.get.mockImplementation(() => mockRequisicao(mockTransacao));
@@ -48,6 +58,15 @@ describe('Requisições para API', () => {
     expect(transacoes).toEqual([]);
 
     expect(api.get).toHaveBeenCalledWith('/transacoes');
-  })
+  });
+
+  test('Deve retornar um status 201 - (Created) após uma requisição POST', async () => {
+    api.post.mockImplementation(() => mockRequisicaoPost());
+
+    const status = await salvaTransacao(mockTransacao[0]);
+    expect(status).toBe(201);
+
+    expect(api.post).toHaveBeenCalledWith('/transacoes', mockTransacao[0]);
+  });
 });
 
