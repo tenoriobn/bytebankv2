@@ -25,6 +25,8 @@ export default function App() {
     salvaTransacao(valores);
   }
 
+  console.log(saldo)
+
   return (
     <>
       <Cabecalho />
